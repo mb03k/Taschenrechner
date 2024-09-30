@@ -96,28 +96,22 @@ public class Screen {
     }
 
     public void handleButtonClick(JButton btn) {
-        /*
-         * case 1:
-         * number was clicked
-         *  -> add number to ArrayList
-         *  
-         * case 2:
-         * operator was clicked
-         *  -> send ArrayList as String with the operator to second method
-         */
 
         String btnText = btn.getText();
         textArea.append(btnText);
 
-        if (isNumeric(btnText)) {
+        if (isNumeric(btnText)) { // number
             inputContainer.add(btnText);
-        } else if (isMathematicalOperator(btnText)) {
+        } else if (isMathematicalOperator(btnText)) { // calculate certain operation (+, -, *, /)
             String input = String.join("", inputContainer);
             currentNumber = Integer.parseInt(input);
 
             bc.mathematicalOperatorBtnClick(currentNumber, btnText);
-        } else {
+            inputContainer.removeAll(inputContainer);
+        } else { // calculate result
             if (isEqualOperation(btnText)) {
+                String input = String.join("", inputContainer);
+                currentNumber = Integer.parseInt(input);
                 bc.calculateResult(currentNumber);
             }
         }

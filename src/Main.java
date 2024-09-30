@@ -10,7 +10,7 @@ public class Main {
             JFrame frame = new Frame();
 
             Screen screen = new Screen(frame);
-            screen.setButtons();
+            screen.setButtonScreen();
         });
     }
 }

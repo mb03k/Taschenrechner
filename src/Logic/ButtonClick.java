@@ -20,7 +20,7 @@ public class ButtonClick {
     public void calculateResult(int secondNumber) {
         this.secondNumber = secondNumber;
 
-        System.out.println("ERGEBNIS (BITTE BITTE BITTE): "+checkOperation().toString());
+        System.out.println(checkOperation().toString());
     }
 
     public String checkOperation() {
@@ -28,7 +28,6 @@ public class ButtonClick {
             case "+":
                 return String.valueOf(firstNumber += secondNumber);
             case "-":
-            System.out.println("1: "+firstNumber+" | 2: "+secondNumber);
                 return String.valueOf(firstNumber -= secondNumber);
             case "*":
                 return String.valueOf(firstNumber *= secondNumber);
