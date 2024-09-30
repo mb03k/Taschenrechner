@@ -1,12 +1,16 @@
 package GUI;
 
 import java.awt.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
+
+import Logic.ButtonClick;
+import static Logic.StringChecks.*;
 
 public class Screen {
     private JFrame frame;
 
-    private JTextArea textArea = new JTextArea();
     private JButton ac = new JButton("AC");
     private JButton divide = new JButton("/");
     private JButton multiplie = new JButton("*");
@@ -28,28 +32,28 @@ public class Screen {
     private JButton nine = new JButton("9");
     private JButton zero = new JButton("0");
 
+    private JPanel textPanel = new JPanel();
+    private JPanel buttonPanel = new JPanel();
+    private JTextArea textArea = new JTextArea();
+    private ButtonClick bc = new ButtonClick();
+
+    private ArrayList<String> inputContainer = new ArrayList<>();
+    private int currentNumber = 0;
+
     public Screen(JFrame frame) {
         this.frame = frame;
         frame.setVisible(true);
     }
 
-    public void setButtons() {
+    public void setButtonScreen() {
         setGridLayoutWithButtons();
+        setButtonListener();
     }
 
     public void setGridLayoutWithButtons() {
-        frame.setLayout(new GridLayout());
-        JTextArea ta = new JTextArea();
-        JPanel panel = new JPanel();
-        JPanel textPanel = new JPanel();
-        JPanel buttonPanel = new JPanel();
-
-        panel.setLayout(new GridLayout(2,0));
-        //textPanel.setLayout(new GridLayout());
+        frame.setLayout(new BorderLayout());
         buttonPanel.setLayout(new GridLayout(5,4));
-
-        ta.append("HAUS");
-        textPanel.add(ta);
+        textArea.setFont(new Font("Arial", Font.PLAIN, 30));
 
         buttonPanel.add(ac);
         buttonPanel.add(divide);
@@ -75,19 +79,47 @@ public class Screen {
         buttonPanel.add(zero);
         buttonPanel.add(modulo);
 
-        // removes marker of the text when buttons are clicked
-        for (Component comp : buttonPanel.getComponents()) {
-            if (comp instanceof JButton) {
-                ((JButton) comp).setFocusPainted(false);
-            }
-        }
+        textPanel.add(textArea);
 
-        panel.add(textPanel);
-        panel.add(buttonPanel);
-        frame.add(panel);
+        frame.add(textPanel, BorderLayout.NORTH);
+        frame.add(buttonPanel, BorderLayout.CENTER);
     }
 
     public void setButtonListener() {
+        for (Component comp : buttonPanel.getComponents()) {
+            JButton btn = (JButton) comp;
+            btn.setFont(new Font("Arial", Font.PLAIN, 30));
 
+            btn.setFocusPainted(false);
+            btn.addActionListener(e -> handleButtonClick(btn));
+        }
+    }
+
+    public void handleButtonClick(JButton btn) {
+        /*
+         * case 1:
+         * number was clicked
+         *  -> add number to ArrayList
+         *  
+         * case 2:
+         * operator was clicked
+         *  -> send ArrayList as String with the operator to second method
+         */
+
+        String btnText = btn.getText();
+        textArea.append(btnText);
+
+        if (isNumeric(btnText)) {
+            inputContainer.add(btnText);
+        } else if (isMathematicalOperator(btnText)) {
+            String input = String.join("", inputContainer);
+            currentNumber = Integer.parseInt(input);
+
+            bc.mathematicalOperatorBtnClick(currentNumber, btnText);
+        } else {
+            if (isEqualOperation(btnText)) {
+                bc.calculateResult(currentNumber);
+            }
+        }
     }
 }
