@@ -98,11 +98,9 @@ public class Screen {
     public void handleButtonClick(JButton btn) {
 
         String btnText = btn.getText();
-        textArea.append(btnText);
-
-        if (isNumeric(btnText)) { // number
-            inputContainer.add(btnText);
-        } else if (isMathematicalOperator(btnText)) { // calculate certain operation (+, -, *, /)
+        inputContainer.add(btnText); 
+        
+        if (isMathematicalOperator(btnText)) { // calculate certain operation (+, -, *, /)
             String input = String.join("", inputContainer);
             currentNumber = Integer.parseInt(input);
 

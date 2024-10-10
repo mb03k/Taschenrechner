@@ -1,13 +1,11 @@
 package Logic;
 
 public class StringChecks {
-    public  static boolean isNumeric(String string) {
+    public static boolean isNumeric(String string) {
         try {
             int intValue = Integer.parseInt(string);
             return true;
-        } catch (NumberFormatException e) {
-            System.out.println("Input String cannot be parsed to Integer.");
-        }
+        } catch (NumberFormatException ignored) {}
         return false;
     }
 
